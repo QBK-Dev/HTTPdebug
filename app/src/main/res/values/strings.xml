@@ -1,6 +1,18 @@
-<resources>
-    <string name="app_name">HTTPdebug</string>
+﻿<resources>
+    <string name="app_name">HTTP debug</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="description_1">Enter server\'s url:</string>
+    <string name="edit_hint_1">botay.life</string>
+    <string name="description_2">Enter request body:</string>
+    <string name="edit_hint_2">/files/images/cat.jpg</string>
+    <string name="description_3">Choose request type</string>
+    <string name="text_get">GET</string>
+    <string name="text_post">POST</string>
+    <string name="text_go">See results</string>
     <string name="action_settings">Settings</string>
+    <string name="text_img_view">Result image view</string>
+    <string name="text_str_view">String result</string>
+    <string name="text_download">Make request</string>
+    <string name="title_activity_result_viewer">ResultViewer</string>
 </resources>
