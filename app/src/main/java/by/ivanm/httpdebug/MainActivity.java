@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 //test git org
 public class MainActivity extends Activity {
@@ -21,12 +27,17 @@ public class MainActivity extends Activity {
     String method = "GET";
     String requestUri = "";
     String requestBody = "";
+    String responseBody = "";
+    public enum RequestMethod {
+        GET,
+        POST
+    }
    /* mPreferences = this.getSharedPreferences("ru.mipt.botay", Context.MODE_PRIVATE);
     mPreferencesEditor = mPreferences.edit();
     mPreferencesEditor.remove("string");
     mPreferencesEditor.putString("method","GET");
     mPreferencesEditor.apply();*/
-//hjh
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,27 +76,51 @@ public class MainActivity extends Activity {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ResultViewer.class);
+                intent.putExtra("respBody",responseBody);
                 startActivity(intent);
             }
         });
 
+        // When user clicks button, calls AsyncTask.
+        // Before attempting to fetch the URL, makes sure that there is a network connection.
         Button buttonDo = (Button) findViewById(R.id.buttonDownload);
         buttonDo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 requestUri = "http://" + editTextServer.getText().toString();
                 requestBody = editTextRequestBody.getText().toString();
-                switch(method){
-                    case "GET":
-
-                        break;
-                    case "POST":
-
-                        break;
-                    default:
-                        break;
+                //TODO then the fields are empty
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    DownloadWebpageTask DWT =  new DownloadWebpageTask();
+                    DWT.execute(requestUri,method);
+                    //DWT.onPostExecute();
+                } else {
+                    //TODO Toast
+                    Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            // params comes from the execute() call: params[0] is the url and params[1] is the method
+            try {
+                Requester req = new Requester(params[0] ,params[1]);
+
+                return req.request();
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            responseBody = result;
+        }
     }
 
     @Override

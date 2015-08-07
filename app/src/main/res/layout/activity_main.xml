@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:columnCount="2"
-        app:rowCount="9"
+        app:rowCount="10"
         app:orientation="vertical"
         android:stretchColumns="*">
 
@@ -144,6 +144,15 @@
             app:layout_columnSpan="2"
             app:layout_column="0"
             app:layout_gravity="fill_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/textView"
+            app:layout_row="9"
+            app:layout_column="0"
+            app:layout_columnSpan="2"/>
 
     </android.support.v7.widget.GridLayout>
 
