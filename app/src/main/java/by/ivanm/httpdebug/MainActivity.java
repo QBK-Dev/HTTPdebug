@@ -62,7 +62,6 @@ public class MainActivity extends Activity {
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
                 switch (checkedId) {
                     case -1:
                         Toast.makeText(getApplicationContext(), "No choice", Toast.LENGTH_SHORT).show();
@@ -99,7 +98,7 @@ public class MainActivity extends Activity {
         Button buttonDialog = (Button) findViewById(R.id.buttonDialog);
         buttonDialog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog1.show(getFragmentManager(), "dlg1");
+                dialog1.show(getFragmentManager(), "dialog 1");
             }
         });
 
@@ -116,7 +115,7 @@ public class MainActivity extends Activity {
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 //TODO use only wifi?
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    DownloadWebpageTask DWT =  new DownloadWebpageTask();
+                    DownloadWebPageTask DWT =  new DownloadWebPageTask();
                     DWT.execute( requestUri, method, "defaultFileForResponse.txt");
                     
                 } else {
@@ -126,7 +125,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute(){

@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:text="@string/text_dialog"
             android:id="@+id/buttonDialog"
-            app:layout_row="8"
+            app:layout_row="9"
             app:layout_columnSpan="2"
             app:layout_column="0"
             app:layout_gravity="fill_horizontal" />

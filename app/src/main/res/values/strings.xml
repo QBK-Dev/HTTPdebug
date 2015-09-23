@@ -15,5 +15,5 @@
     <string name="text_str_view">String result</string>
     <string name="text_download">Make request</string>
     <string name="title_activity_result_viewer">ResultViewer</string>
-    <string name="text_dialog">test dialog</string>
+    <string name="text_dialog">Test dialog</string>
 </resources>

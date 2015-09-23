@@ -18,9 +18,9 @@ public class Dialog1 extends DialogFragment implements OnClickListener {
                              Bundle savedInstanceState) {
         getDialog().setTitle("Title!");
         View v = inflater.inflate(R.layout.dialog1, null);
-        v.findViewById(R.id.btnYes).setOnClickListener(this);
-        v.findViewById(R.id.btnNo).setOnClickListener(this);
-        v.findViewById(R.id.btnMaybe).setOnClickListener(this);
+        v.findViewById(R.id.buttonNeutral).setOnClickListener(this);
+        v.findViewById(R.id.buttonNegative).setOnClickListener(this);
+        v.findViewById(R.id.buttonPositive).setOnClickListener(this);
         return v;
     }
 
