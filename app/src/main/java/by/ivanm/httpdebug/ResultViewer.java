@@ -1,9 +1,11 @@
 package by.ivanm.httpdebug;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class ResultViewer extends Activity {
@@ -12,6 +14,11 @@ public class ResultViewer extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_viewer);
+
+        Intent intent = getIntent();
+        String respBody = intent.getStringExtra("respBody");
+
+        TextView textViewResult = (TextView)findViewById(R.id.textViewResult);
     }
 
     @Override

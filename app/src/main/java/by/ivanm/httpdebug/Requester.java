@@ -34,6 +34,9 @@ public class Requester {
     private RequestMethod method;
     private OutputStream outputStream;
     private PrintWriter writer;
+    private String fileName;
+    //TODO smth more creaver than fileName
+
 
     /**
      * Constructor initializes class
@@ -41,8 +44,9 @@ public class Requester {
      * @param meth Of type RequestMethod, switches between POST AND GET
      */
     //public Requester(String requestURL, RequestMethod method) {
-    public Requester(String requestURL, String meth) {
+    public Requester(String requestURL, String meth, String fileName) {
         this.requestUrl = requestURL;
+        this.fileName = fileName;
         if (meth.equals("GET")){ this.method = RequestMethod.GET;}
         if (meth.equals("POST")){ this.method = RequestMethod.POST;}
 
@@ -160,7 +164,7 @@ public class Requester {
         String response = null;
 
         // Default header
-        addHeader("User-Agent", "ServiceClient (botay) Java Client");
+        addHeader("User-Agent", "ServiceClient (botay) Java Android Client");
 
         // Set Content-Type depending on request method
         if (files.size() > 0) {

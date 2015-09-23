@@ -1,6 +1,7 @@
 package by.ivanm.httpdebug;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,31 +23,39 @@ import java.io.IOException;
 //test git org
 public class MainActivity extends Activity {
 
-    SharedPreferences mPreferences;
-    SharedPreferences.Editor mPreferencesEditor;
+    //SharedPreferences mPreferences;
+    //SharedPreferences.Editor mPreferencesEditor;
     String method = "GET";
-    String requestUri = "";
+    String requestUri = "http://";
     String requestBody = "";
     String responseBody = "";
-    public enum RequestMethod {
-        GET,
-        POST
-    }
-   /* mPreferences = this.getSharedPreferences("ru.mipt.botay", Context.MODE_PRIVATE);
+    /*mPreferences = this.getSharedPreferences("ru.mipt.botay", Context.MODE_PRIVATE);
     mPreferencesEditor = mPreferences.edit();
     mPreferencesEditor.remove("string");
     mPreferencesEditor.putString("method","GET");
-    mPreferencesEditor.apply();*/
+    mPreferencesEditor.apply();
+    */
+    DialogFragment dialog1;
+
+
+    @Override
+    protected void onPause() {
+        Toast.makeText(getApplicationContext(), "Po345q34tq34yq5yaeryaeryst", Toast.LENGTH_SHORT).show();
+        super.onPause();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dialog1 = new Dialog1();
+
         final EditText editTextServer =  (EditText)findViewById(R.id.editTextServer);
         final EditText editTextRequestBody =  (EditText)findViewById(R.id.editTextRequestBody);
 
-        mPreferences = this.getSharedPreferences("by.ivanm.httpdebug", Context.MODE_PRIVATE);
+        //mPreferences = this.getSharedPreferences("by.ivanm.httpdebug", Context.MODE_PRIVATE);
         //mPreferencesEditor = mPreferences.edit();
 
         RadioGroup radiogroup = (RadioGroup) findViewById(R.id.radioGroup);
@@ -72,32 +81,45 @@ public class MainActivity extends Activity {
             }
         });
 
+
+
+
+        //When user click button, new activity starts
+        //Extra contains url parameters
         Button buttonGo = (Button) findViewById(R.id.buttonGo);
         buttonGo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ResultViewer.class);
+               Intent intent = new Intent(MainActivity.this, ResultViewer.class);
                 intent.putExtra("respBody",responseBody);
                 startActivity(intent);
             }
         });
 
-        // When user clicks button, calls AsyncTask.
+        //When user click button, new stupid dialog1 stars
+        Button buttonDialog = (Button) findViewById(R.id.buttonDialog);
+        buttonDialog.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog1.show(getFragmentManager(), "dlg1");
+            }
+        });
+
+        // When user clicks button url and url parameters takes from editText fields,after that calls AsyncTask.
         // Before attempting to fetch the URL, makes sure that there is a network connection.
         Button buttonDo = (Button) findViewById(R.id.buttonDownload);
         buttonDo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                requestUri = "http://" + editTextServer.getText().toString();
+                requestUri = requestUri + editTextServer.getText().toString();
                 requestBody = editTextRequestBody.getText().toString();
                 //TODO then the fields are empty
                 ConnectivityManager connMgr = (ConnectivityManager)
                         getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                //TODO use only wifi?
                 if (networkInfo != null && networkInfo.isConnected()) {
                     DownloadWebpageTask DWT =  new DownloadWebpageTask();
-                    DWT.execute(requestUri,method);
-                    //DWT.onPostExecute();
+                    DWT.execute( requestUri, method, "defaultFileForResponse.txt");
+                    
                 } else {
-                    //TODO Toast
                     Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -105,11 +127,22 @@ public class MainActivity extends Activity {
     }
 
     private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            Toast.makeText(getApplicationContext(), "AsyncTask BEGIN", Toast.LENGTH_SHORT).show();
+
+        }
         @Override
         protected String doInBackground(String... params) {
-            // params comes from the execute() call: params[0] is the url and params[1] is the method
+            // params comes from the execute() call: params[0] is the url, params[1] is the method param[2] is the file name for result
             try {
-                Requester req = new Requester(params[0] ,params[1]);
+                Requester req = new Requester(params[0], params[1], params[2]);
+
+
+
+
 
                 return req.request();
             } catch (IOException e) {
@@ -119,7 +152,9 @@ public class MainActivity extends Activity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            super.onPostExecute(result);
             responseBody = result;
+            Toast.makeText(getApplicationContext(), "AsyncTask END", Toast.LENGTH_SHORT).show();
         }
     }
 
