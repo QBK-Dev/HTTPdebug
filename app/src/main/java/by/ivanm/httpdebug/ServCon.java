@@ -1,6 +1,7 @@
 package by.ivanm.httpdebug;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,16 +52,15 @@ public class ServCon extends AsyncTask<String, Void, String> {
         }
         return output.toString();
     }
-
-    private InputStream getHttpConnection(String urlString) throws IOException {
-    //private void getHttpConnection(String urlString) throws IOException {
-        InputStream stream = null;
+    //private InputStream getHttpConnection(String urlString) throws IOException {
+    private void getHttpConnection(String urlString) throws IOException {
+        //InputStream stream = null;
         try {
             if ( method.equals("POST") ) {
                 URL url = new URL(urlString);
                 URLConnection connection = url.openConnection();
                 HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod(method);
+                httpConnection.setRequestMethod("POST");
                 httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0 ( compatible ) ");
                 httpConnection.setRequestProperty("Accept", "*/*");
                 httpConnection.setDoOutput(true);
@@ -70,28 +70,30 @@ public class ServCon extends AsyncTask<String, Void, String> {
                 writer.write(urlParameters);
                 writer.flush();
 
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                /*if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     stream = httpConnection.getInputStream();
-                }
+                }*/
                 writer.close();
-            }
-            if ( method.equals( "GET") ) {
-
-                URL url = new URL(urlString + requestBody);
-                HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-                httpConnection.setRequestMethod(method);
-                httpConnection.setDoInput(true);
-                httpConnection.connect();
+                Log.v("CatalogClient", "Response code:" + httpConnection.getResponseCode());
                 httpConnection.disconnect();
+            }
+            if (method.equals( "GET") ) {
+                URL url = new URL(urlString +"?"+ requestBody);
+                HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+                httpConnection.setRequestMethod("GET");
+                httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0 ( compatible ) ");
+                httpConnection.setRequestProperty("Accept", "*/*");
+                httpConnection.setDoOutput(true);
+                httpConnection.connect();
 
                 FileOutputStream fileOutput = new FileOutputStream(destination);
                 //Stream used for reading the data from the internet
                 InputStream inputStream = httpConnection.getInputStream();
                 //this is the total size of the file which we are downloading
                 totalSize = httpConnection.getContentLength();
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                /*if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     stream = httpConnection.getInputStream();
-                }/*
+                }*/
                 //create a buffer...
                 byte[] buffer = new byte[1024];
                 int bufferLength;
@@ -103,17 +105,16 @@ public class ServCon extends AsyncTask<String, Void, String> {
                     //publishProgress(downloadSize, totalSize, i + 1, filesCount);
                 }
                 //close the output stream when complete
-                */
                 fileOutput.close();
-                inputStream.close();
+                Log.v("CatalogClient", "Response code:" + httpConnection.getResponseCode());
+                httpConnection.disconnect();
             }
 
         } catch (final Exception e) {
             e.printStackTrace();
         }
-        return stream;
+        //return stream;
     }
-
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);

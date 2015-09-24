@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
         Button buttonDo = (Button) findViewById(R.id.buttonDownload);
         buttonDo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                requestUri = requestUri + editTextServer.getText().toString();
+                requestUri = requestUri + editTextServer.getText().toString() + "/";
                 requestBody = editTextRequestBody.getText().toString();
                 //TODO then the fields are empty
                 ConnectivityManager connMgr = (ConnectivityManager)
@@ -113,8 +113,7 @@ public class MainActivity extends Activity {
                     task.method = method;
                     task.requestBody = requestBody;
                     task.destination = String.valueOf(getApplicationContext().getFilesDir()) + "/file.txt";
-                    task.execute("http://efmnm.com/" );
-                    
+                    task.execute(requestUri);
                 } else {
                     Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }
