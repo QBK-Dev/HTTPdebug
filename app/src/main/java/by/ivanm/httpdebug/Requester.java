@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Requester {
 
+    ///////////json
     public enum RequestMethod {
         GET,
         POST

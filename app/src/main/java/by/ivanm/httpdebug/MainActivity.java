@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 
 //test git org
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
 
     //SharedPreferences mPreferences;
     //SharedPreferences.Editor mPreferencesEditor;
-    String method = "GET";
+    String method = "POST";
     String requestUri = "http://";
     String requestBody = "";
     String responseBody = "";
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
-        Toast.makeText(getApplicationContext(), "Po345q34tq34yq5yaeryaeryst", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
 
     }
@@ -54,9 +55,6 @@ public class MainActivity extends Activity {
 
         final EditText editTextServer =  (EditText)findViewById(R.id.editTextServer);
         final EditText editTextRequestBody =  (EditText)findViewById(R.id.editTextRequestBody);
-
-        //mPreferences = this.getSharedPreferences("by.ivanm.httpdebug", Context.MODE_PRIVATE);
-        //mPreferencesEditor = mPreferences.edit();
 
         RadioGroup radiogroup = (RadioGroup) findViewById(R.id.radioGroup);
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -79,10 +77,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
-
-
-
         //When user click button, new activity starts
         //Extra contains url parameters
         Button buttonGo = (Button) findViewById(R.id.buttonGo);
@@ -115,46 +109,17 @@ public class MainActivity extends Activity {
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                 //TODO use only wifi?
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    DownloadWebPageTask DWT =  new DownloadWebPageTask();
-                    DWT.execute( requestUri, method, "defaultFileForResponse.txt");
+                    ServCon task = new ServCon();
+                    task.method = method;
+                    task.requestBody = requestBody;
+                    task.destination = String.valueOf(getApplicationContext().getFilesDir()) + "/file.txt";
+                    task.execute("http://efmnm.com/" );
                     
                 } else {
                     Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute(){
-            super.onPreExecute();
-            Toast.makeText(getApplicationContext(), "AsyncTask BEGIN", Toast.LENGTH_SHORT).show();
-
-        }
-        @Override
-        protected String doInBackground(String... params) {
-            // params comes from the execute() call: params[0] is the url, params[1] is the method param[2] is the file name for result
-            try {
-                Requester req = new Requester(params[0], params[1], params[2]);
-
-
-
-
-
-                return req.request();
-            } catch (IOException e) {
-                return "Unable to retrieve web page. URL may be invalid.";
-            }
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            responseBody = result;
-            Toast.makeText(getApplicationContext(), "AsyncTask END", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
