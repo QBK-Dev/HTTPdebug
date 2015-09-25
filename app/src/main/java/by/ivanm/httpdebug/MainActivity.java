@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,14 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
-//test git org
 public class MainActivity extends Activity {
 
     //SharedPreferences mPreferences;
@@ -83,7 +76,10 @@ public class MainActivity extends Activity {
         Button buttonGo = (Button) findViewById(R.id.buttonGo);
         buttonGo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               Intent intent = new Intent(MainActivity.this, ResultViewer.class);
+                Intent intent = new Intent(MainActivity.this, ResultViewer.class);
+                MyFilesStr myFilesStr = new MyFilesStr();
+
+                responseBody =  myFilesStr.readFile(getApplicationContext(),"file.txt");
                 intent.putExtra("respBody",responseBody);
                 startActivity(intent);
             }
@@ -115,13 +111,6 @@ public class MainActivity extends Activity {
                     task.requestBody = requestBody;
                     task.destination = String.valueOf(getApplicationContext().getFilesDir()) + "/file.txt";
                     task.execute(requestUri);
-                    String strtmp = "hihya";
-                    /*try {
-                        strtmp = task.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }*/
-                    responseBody = strtmp;
                 } else {
                     Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }
