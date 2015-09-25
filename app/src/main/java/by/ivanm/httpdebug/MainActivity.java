@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 //test git org
 public class MainActivity extends Activity {
@@ -114,6 +115,13 @@ public class MainActivity extends Activity {
                     task.requestBody = requestBody;
                     task.destination = String.valueOf(getApplicationContext().getFilesDir()) + "/file.txt";
                     task.execute(requestUri);
+                    String strtmp = "hihya";
+                    /*try {
+                        strtmp = task.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }*/
+                    responseBody = strtmp;
                 } else {
                     Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
                 }

@@ -19,6 +19,7 @@ public class ResultViewer extends Activity {
         String respBody = intent.getStringExtra("respBody");
 
         TextView textViewResult = (TextView)findViewById(R.id.textViewResult);
+        textViewResult.setText(respBody);
     }
 
     @Override
