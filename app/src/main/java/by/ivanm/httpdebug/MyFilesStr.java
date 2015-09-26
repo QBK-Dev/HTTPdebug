@@ -21,7 +21,7 @@ public class MyFilesStr {
         FileInputStream inputStream = null;
         StringBuilder sb = new StringBuilder();
         String line;
-        String inputString = "empty";
+        String inputString = "empty_form_MyFilesStr_readFle";
 
         try {
             inputStream = context.openFileInput(destination);

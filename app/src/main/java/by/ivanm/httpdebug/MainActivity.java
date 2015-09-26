@@ -18,24 +18,14 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    //SharedPreferences mPreferences;
-    //SharedPreferences.Editor mPreferencesEditor;
     String method = "POST";
     String requestUri = "http://";
     String requestBody = "";
-    String responseBody = "";
-    /*mPreferences = this.getSharedPreferences("ru.mipt.botay", Context.MODE_PRIVATE);
-    mPreferencesEditor = mPreferences.edit();
-    mPreferencesEditor.remove("string");
-    mPreferencesEditor.putString("method","GET");
-    mPreferencesEditor.apply();
-    */
+    String responseBody = "main";
     DialogFragment dialog1;
-
 
     @Override
     protected void onPause() {
-        //Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
 
     }
@@ -71,21 +61,19 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        //When user click button, new activity starts
-        //Extra contains url parameters
+
         Button buttonGo = (Button) findViewById(R.id.buttonGo);
         buttonGo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ResultViewer.class);
                 MyFilesStr myFilesStr = new MyFilesStr();
-
+                //myFilesStr.writeToFile(getApplicationContext(), "file.txt", "WTF");
                 responseBody =  myFilesStr.readFile(getApplicationContext(),"file.txt");
                 intent.putExtra("respBody",responseBody);
                 startActivity(intent);
             }
         });
 
-        //When user click button, new stupid dialog1 stars
         Button buttonDialog = (Button) findViewById(R.id.buttonDialog);
         buttonDialog.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -93,12 +81,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        // When user clicks button url and url parameters takes from editText fields,after that calls AsyncTask.
-        // Before attempting to fetch the URL, makes sure that there is a network connection.
         Button buttonDo = (Button) findViewById(R.id.buttonDownload);
         buttonDo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                requestUri = requestUri + editTextServer.getText().toString() + "/";
+                requestUri = "http://" + editTextServer.getText().toString() + "/";
                 requestBody = editTextRequestBody.getText().toString();
                 //TODO then the fields are empty
                 ConnectivityManager connMgr = (ConnectivityManager)

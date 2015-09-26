@@ -3,9 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="description_1">Enter server\'s url:</string>
-    <string name="edit_hint_1">efmnm.com</string>
+    <string name="edit_hint_1">humanstxt.org</string>
     <string name="description_2">Enter request body:</string>
-    <string name="edit_hint_2">example.txt</string>
+    <string name="edit_hint_2">humans.txt</string>
     <string name="description_3">Choose request type</string>
     <string name="text_get">GET</string>
     <string name="text_post">POST</string>
